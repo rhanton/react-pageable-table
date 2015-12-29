@@ -1,0 +1,21 @@
+{
+  "name": "react-pageable-table",
+  "version": "1.0.0",
+  "description": "React pageable table component",
+  "main": "dist/scripts/pageable.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/pgrimard/react-pageable-table.git"
+  },
+  "keywords": [
+    "react",
+    "pageable",
+    "table"
+  ],
+  "author": "Patrick Grimard <pgrimard@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pgrimard/react-pageable-table/issues"
+  },
+  "homepage": "https://github.com/pgrimard/react-pageable-table#readme"
+}
