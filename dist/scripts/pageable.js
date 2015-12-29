@@ -56,7 +56,7 @@ var PageableTable = (function (_Component) {
         _react2.default.createElement(Pagination, null),
         _react2.default.createElement(
           'table',
-          { className: 'pageable-table' },
+          { className: 'pageable-table ' + this.props.className },
           _react2.default.createElement(
             'tbody',
             null,

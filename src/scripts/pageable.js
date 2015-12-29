@@ -19,7 +19,7 @@ export default class PageableTable extends Component {
     return (
       <div>
         <Pagination/>
-        <table className="pageable-table">
+        <table className={'pageable-table ' + this.props.className}>
           <tbody>{data}</tbody>
         </table>
       </div>
