@@ -11,7 +11,7 @@ export default class PageableTable extends Component {
   }
 
   componentDidMount() {
-    rest(this.props.dataPath).then((data) => this.setState({data: data}));
+    rest(this.props.dataPath).then((data) => this.setState({data: JSON.parse(data.entity).content}));
   }
 
   render() {

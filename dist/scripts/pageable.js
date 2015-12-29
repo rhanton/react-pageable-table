@@ -43,7 +43,7 @@ var PageableTable = (function (_Component) {
       var _this2 = this;
 
       (0, _rest2.default)(this.props.dataPath).then(function (data) {
-        return _this2.setState({ data: data });
+        return _this2.setState({ data: JSON.parse(data.entity).content });
       });
     }
   }, {
