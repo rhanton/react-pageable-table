@@ -77,7 +77,10 @@ export class PaginationLinks extends Component {
   constructor(props) {
     super(props);
 
+    this.onFirst = this.onFirst.bind(this);
+    this.onPrevious = this.onPrevious.bind(this);
     this.onNext = this.onNext.bind(this);
+    this.onLast = this.onLast.bind(this);
   }
 
   onFirst(e) {

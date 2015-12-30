@@ -134,7 +134,10 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
 
     var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(PaginationLinks).call(this, props));
 
+    _this4.onFirst = _this4.onFirst.bind(_this4);
+    _this4.onPrevious = _this4.onPrevious.bind(_this4);
     _this4.onNext = _this4.onNext.bind(_this4);
+    _this4.onLast = _this4.onLast.bind(_this4);
     return _this4;
   }
 
