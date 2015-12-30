@@ -20,10 +20,10 @@
   },
   "homepage": "https://github.com/pgrimard/react-pageable-table#readme",
   "peerDependencies": {
-    "numeral": "^1.5.x",
-    "object-assign": "^4.0.x",
-    "react": "^0.13.x",
-    "rest": "^1.3.x"
+    "numeral": "1.5.x",
+    "object-assign": "4.0.x",
+    "react": "0.13.x",
+    "rest": "1.3.x"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",
