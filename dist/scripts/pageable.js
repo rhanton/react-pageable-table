@@ -19,6 +19,10 @@ var _objectAssign = require('object-assign');
 
 var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
+var _numeral = require('numeral');
+
+var _numeral2 = _interopRequireDefault(_numeral);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -82,7 +86,7 @@ var PageableTable = (function (_Component) {
     value: function render() {
       var data = this.state.data.map(this.props.dataMapper);
 
-      var stats = ['Page ' + (this.state.pageable.totalPages > 0 ? this.state.pageable.number + 1 : 0) + ' of ' + this.state.pageable.totalPages, '# of records: ' + this.state.pageable.numberOfElements, 'Total # of records: ' + this.state.pageable.totalElements];
+      var stats = ['Page ' + (this.state.pageable.totalPages > 0 ? (0, _numeral2.default)(this.state.pageable.number + 1).format('0,0') : 0) + ' of ' + (0, _numeral2.default)(this.state.pageable.totalPages).format('0,0'), '# of records: ' + (0, _numeral2.default)(this.state.pageable.numberOfElements).format('0,0'), 'Total # of records: ' + (0, _numeral2.default)(this.state.pageable.totalElements).format('0,0')];
 
       return _react2.default.createElement(
         'div',

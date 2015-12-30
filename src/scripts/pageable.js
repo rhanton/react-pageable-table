@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import rest from 'rest';
 import assign from 'object-assign';
+import numeral from 'numeral';
 
 export default class PageableTable extends Component {
   constructor(props) {
@@ -45,9 +46,9 @@ export default class PageableTable extends Component {
     let data = this.state.data.map(this.props.dataMapper);
 
     let stats = [
-      'Page ' + (this.state.pageable.totalPages > 0 ? this.state.pageable.number + 1 : 0) + ' of ' + this.state.pageable.totalPages,
-      '# of records: ' + this.state.pageable.numberOfElements,
-      'Total # of records: ' + this.state.pageable.totalElements
+      'Page ' + (this.state.pageable.totalPages > 0 ? numeral(this.state.pageable.number + 1).format('0,0') : 0) + ' of ' + numeral(this.state.pageable.totalPages).format('0,0'),
+      '# of records: ' + numeral(this.state.pageable.numberOfElements).format('0,0'),
+      'Total # of records: ' + numeral(this.state.pageable.totalElements).format('0,0')
     ];
 
     return (
