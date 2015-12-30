@@ -170,7 +170,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(
+      return this.props.pageable.first && this.props.pageable.last ? null : _react2.default.createElement(
         'div',
         { className: 'pagination-links-container' },
         _react2.default.createElement(
