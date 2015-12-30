@@ -18,7 +18,8 @@
 }
 
 .pageable-table-stats li::before {
-    content: ' | '
+    content: ' \2215 ';
+    color: #999;
 }
 
 .pageable-table-stats li:first-child::before {
