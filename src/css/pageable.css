@@ -18,7 +18,7 @@
 }
 
 .pageable-table-stats li::before {
-    content: ' \2215 ';
+    content: ' \2215  ';
     color: #999;
 }
 
