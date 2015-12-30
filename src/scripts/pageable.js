@@ -74,6 +74,12 @@ PageableTable.defaultProps = {
 };
 
 export class PaginationLinks extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onNext = this.onNext.bind(this);
+  }
+
   onNext(e) {
     e.preventDefault();
     let page = this.props.pageable.number < (this.props.pageable.totalPages - 1) ? this.props.pageable.number + 1 : this.props.pageable.number;

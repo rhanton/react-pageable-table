@@ -129,10 +129,13 @@ PageableTable.defaultProps = {
 var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
   _inherits(PaginationLinks, _Component2);
 
-  function PaginationLinks() {
+  function PaginationLinks(props) {
     _classCallCheck(this, PaginationLinks);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(PaginationLinks).apply(this, arguments));
+    var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(PaginationLinks).call(this, props));
+
+    _this4.onNext = _this4.onNext.bind(_this4);
+    return _this4;
   }
 
   _createClass(PaginationLinks, [{
