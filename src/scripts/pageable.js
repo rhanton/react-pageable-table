@@ -73,12 +73,14 @@ PageableTable.defaultProps = {
 export class PaginationLinks extends Component {
   render() {
     return (
-      <ul className="pagination-links">
-        <li className="pagination-link">First</li>
-        <li className="pagination-link">Previous</li>
-        <li className="pagination-link">Next</li>
-        <li className="pagination-link">Last</li>
-      </ul>
+      <div className="pagination-links-container">
+        <ul className="pagination-links">
+          <li className="pagination-link">First</li>
+          <li className="pagination-link">Previous</li>
+          <li className="pagination-link">Next</li>
+          <li className="pagination-link">Last</li>
+        </ul>
+      </div>
     );
   }
 }

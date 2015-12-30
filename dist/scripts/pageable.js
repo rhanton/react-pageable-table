@@ -136,27 +136,31 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        'ul',
-        { className: 'pagination-links' },
+        'div',
+        { className: 'pagination-links-container' },
         _react2.default.createElement(
-          'li',
-          { className: 'pagination-link' },
-          'First'
-        ),
-        _react2.default.createElement(
-          'li',
-          { className: 'pagination-link' },
-          'Previous'
-        ),
-        _react2.default.createElement(
-          'li',
-          { className: 'pagination-link' },
-          'Next'
-        ),
-        _react2.default.createElement(
-          'li',
-          { className: 'pagination-link' },
-          'Last'
+          'ul',
+          { className: 'pagination-links' },
+          _react2.default.createElement(
+            'li',
+            { className: 'pagination-link' },
+            'First'
+          ),
+          _react2.default.createElement(
+            'li',
+            { className: 'pagination-link' },
+            'Previous'
+          ),
+          _react2.default.createElement(
+            'li',
+            { className: 'pagination-link' },
+            'Next'
+          ),
+          _react2.default.createElement(
+            'li',
+            { className: 'pagination-link' },
+            'Last'
+          )
         )
       );
     }

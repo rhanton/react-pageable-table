@@ -1,5 +1,10 @@
 .pageable-table {
     margin-bottom: 20px!important;
+    margin-top: 20px!important;
+}
+
+.pagination-links-container {
+    text-align: right;
 }
 
 .pagination-links {
@@ -9,7 +14,7 @@
     margin: 0;
 }
 
-.pagination-links li {
+.pagination-links .pagination-link {
     display: inline;
     padding: 5px;
 }
