@@ -11,7 +11,10 @@ export default class PageableTable extends Component {
   }
 
   componentDidMount() {
-    rest(this.props.dataPath).then((data) => this.setState({data: JSON.parse(data.entity).content}));
+    let path = this.props.dataPath;
+    path += path.indexOf('?') > -1 ? '&' : '?';
+    path += 'page=0' + (this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '');
+    rest(path).then((data) => this.setState({data: JSON.parse(data.entity).content}));
   }
 
   render() {
@@ -28,7 +31,8 @@ export default class PageableTable extends Component {
 }
 PageableTable.defaultProps = {
   dataMapper: function() {},
-  dataPath: '/'
+  dataPath: '/',
+  sort: []
 };
 
 export class Pagination extends Component {

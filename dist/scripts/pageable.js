@@ -42,7 +42,10 @@ var PageableTable = (function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      (0, _rest2.default)(this.props.dataPath).then(function (data) {
+      var path = this.props.dataPath;
+      path += path.indexOf('?') > -1 ? '&' : '?';
+      path += 'page=0' + (this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '');
+      (0, _rest2.default)(path).then(function (data) {
         return _this2.setState({ data: JSON.parse(data.entity).content });
       });
     }
@@ -74,7 +77,8 @@ exports.default = PageableTable;
 
 PageableTable.defaultProps = {
   dataMapper: function dataMapper() {},
-  dataPath: '/'
+  dataPath: '/',
+  sort: []
 };
 
 var Pagination = exports.Pagination = (function (_Component2) {
