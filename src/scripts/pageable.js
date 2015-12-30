@@ -9,7 +9,10 @@ export default class PageableTable extends Component {
     this.state = {
       data: [],
       pageable: {
-        totalElements: 0
+        totalElements: 0,
+        numberOfElements: 0,
+        number: 0,
+        totalPages: 0
       }
     };
   }
@@ -40,6 +43,13 @@ export default class PageableTable extends Component {
 
   render() {
     let data = this.state.data.map(this.props.dataMapper);
+
+    let stats = [
+      'Page ' + (this.state.pageable.totalPages > 0 ? this.state.pageable.number + 1 : 0) + ' of ' + this.state.pageable.totalPages,
+      '# of records: ' + this.state.pageable.numberOfElements,
+      'Total # of records: ' + this.state.pageable.totalElements
+    ];
+
     return (
       <div>
         <PaginationLinks/>
@@ -47,7 +57,7 @@ export default class PageableTable extends Component {
           <thead>{this.props.tableHeader()}</thead>
           <tbody>{data}</tbody>
         </table>
-        <PageableTableStats stats={['Records: ' + this.state.pageable.totalElements]}/>
+        <PageableTableStats stats={stats}/>
       </div>
     );
   }

@@ -38,7 +38,10 @@ var PageableTable = (function (_Component) {
     _this.state = {
       data: [],
       pageable: {
-        totalElements: 0
+        totalElements: 0,
+        numberOfElements: 0,
+        number: 0,
+        totalPages: 0
       }
     };
     return _this;
@@ -78,6 +81,9 @@ var PageableTable = (function (_Component) {
     key: 'render',
     value: function render() {
       var data = this.state.data.map(this.props.dataMapper);
+
+      var stats = ['Page ' + (this.state.pageable.totalPages > 0 ? this.state.pageable.number + 1 : 0) + ' of ' + this.state.pageable.totalPages, '# of records: ' + this.state.pageable.numberOfElements, 'Total # of records: ' + this.state.pageable.totalElements];
+
       return _react2.default.createElement(
         'div',
         null,
@@ -96,7 +102,7 @@ var PageableTable = (function (_Component) {
             data
           )
         ),
-        _react2.default.createElement(PageableTableStats, { stats: ['Records: ' + this.state.pageable.totalElements] })
+        _react2.default.createElement(PageableTableStats, { stats: stats })
       );
     }
   }]);
