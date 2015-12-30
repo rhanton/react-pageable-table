@@ -5,7 +5,7 @@ var _createClass = (function () { function defineProperties(target, props) { for
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Pagination = undefined;
+exports.PageableTableStats = exports.PaginationLinks = undefined;
 
 var _react = require('react');
 
@@ -14,6 +14,10 @@ var _react2 = _interopRequireDefault(_react);
 var _rest = require('rest');
 
 var _rest2 = _interopRequireDefault(_rest);
+
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32,7 +36,10 @@ var PageableTable = (function (_Component) {
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PageableTable).call(this, props));
 
     _this.state = {
-      data: []
+      data: [],
+      pageable: {
+        totalElements: 0
+      }
     };
     return _this;
   }
@@ -46,7 +53,9 @@ var PageableTable = (function (_Component) {
       path += path.indexOf('?') > -1 ? '&' : '?';
       path += 'page=0' + (this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '');
       (0, _rest2.default)(path).then(function (data) {
-        return _this2.setState({ data: JSON.parse(data.entity).content });
+        var pageable = (0, _objectAssign2.default)({}, JSON.parse(data.entity));
+        delete pageable.content;
+        _this2.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
       });
     }
   }, {
@@ -59,7 +68,9 @@ var PageableTable = (function (_Component) {
         path += path.indexOf('?') > -1 ? '&' : '?';
         path += 'page=0' + (nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '');
         (0, _rest2.default)(path).then(function (data) {
-          return _this3.setState({ data: JSON.parse(data.entity).content });
+          var pageable = (0, _objectAssign2.default)({}, JSON.parse(data.entity));
+          delete pageable.content;
+          _this3.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
         });
       }
     }
@@ -70,7 +81,7 @@ var PageableTable = (function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(Pagination, null),
+        _react2.default.createElement(PaginationLinks, null),
         _react2.default.createElement(
           'table',
           { className: 'pageable-table ' + this.props.className },
@@ -84,7 +95,8 @@ var PageableTable = (function (_Component) {
             null,
             data
           )
-        )
+        ),
+        _react2.default.createElement(PageableTableStats, { stats: ['Records: ' + this.state.pageable.totalElements] })
       );
     }
   }]);
@@ -101,21 +113,21 @@ PageableTable.defaultProps = {
   tableHeader: function tableHeader() {}
 };
 
-var Pagination = exports.Pagination = (function (_Component2) {
-  _inherits(Pagination, _Component2);
+var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
+  _inherits(PaginationLinks, _Component2);
 
-  function Pagination() {
-    _classCallCheck(this, Pagination);
+  function PaginationLinks() {
+    _classCallCheck(this, PaginationLinks);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Pagination).apply(this, arguments));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(PaginationLinks).apply(this, arguments));
   }
 
-  _createClass(Pagination, [{
+  _createClass(PaginationLinks, [{
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'ul',
-        { className: 'pagination' },
+        { className: 'pagination-links' },
         _react2.default.createElement(
           'li',
           { className: 'pagination-link' },
@@ -140,5 +152,43 @@ var Pagination = exports.Pagination = (function (_Component2) {
     }
   }]);
 
-  return Pagination;
+  return PaginationLinks;
 })(_react.Component);
+
+var PageableTableStats = exports.PageableTableStats = (function (_Component3) {
+  _inherits(PageableTableStats, _Component3);
+
+  function PageableTableStats() {
+    _classCallCheck(this, PageableTableStats);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(PageableTableStats).apply(this, arguments));
+  }
+
+  _createClass(PageableTableStats, [{
+    key: 'render',
+    value: function render() {
+      var stats = this.props.stats.map(function (stat, idx) {
+        return _react2.default.createElement(
+          'li',
+          { key: idx },
+          stat
+        );
+      });
+      return stats.length > 0 ? _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'ul',
+          { className: 'pageable-table-stats' },
+          stats
+        )
+      ) : null;
+    }
+  }]);
+
+  return PageableTableStats;
+})(_react.Component);
+
+PageableTableStats.defaultProps = {
+  stats: []
+};

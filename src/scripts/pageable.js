@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
 import rest from 'rest';
+import assign from 'object-assign';
 
 export default class PageableTable extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: []
+      data: [],
+      pageable: {
+        totalElements: 0
+      }
     };
   }
 
@@ -14,7 +18,11 @@ export default class PageableTable extends Component {
     let path = this.props.dataPath;
     path += path.indexOf('?') > -1 ? '&' : '?';
     path += 'page=0' + (this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '');
-    rest(path).then((data) => this.setState({data: JSON.parse(data.entity).content}));
+    rest(path).then(data => {
+      let pageable = assign({}, JSON.parse(data.entity));
+      delete pageable.content;
+      this.setState({data: JSON.parse(data.entity).content, pageable: pageable})
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,7 +30,11 @@ export default class PageableTable extends Component {
       let path = nextProps.dataPath;
       path += path.indexOf('?') > -1 ? '&' : '?';
       path += 'page=0' + (nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '');
-      rest(path).then(data => this.setState({data: JSON.parse(data.entity).content}));
+      rest(path).then(data => {
+        let pageable = assign({}, JSON.parse(data.entity));
+        delete pageable.content;
+        this.setState({data: JSON.parse(data.entity).content, pageable: pageable})
+      });
     }
   }
 
@@ -30,11 +42,12 @@ export default class PageableTable extends Component {
     let data = this.state.data.map(this.props.dataMapper);
     return (
       <div>
-        <Pagination/>
+        <PaginationLinks/>
         <table className={'pageable-table ' + this.props.className}>
           <thead>{this.props.tableHeader()}</thead>
           <tbody>{data}</tbody>
         </table>
+        <PageableTableStats stats={['Records: ' + this.state.pageable.totalElements]}/>
       </div>
     );
   }
@@ -46,10 +59,10 @@ PageableTable.defaultProps = {
   tableHeader: function() {}
 };
 
-export class Pagination extends Component {
+export class PaginationLinks extends Component {
   render() {
     return (
-      <ul className="pagination">
+      <ul className="pagination-links">
         <li className="pagination-link">First</li>
         <li className="pagination-link">Previous</li>
         <li className="pagination-link">Next</li>
@@ -58,3 +71,15 @@ export class Pagination extends Component {
     );
   }
 }
+
+export class PageableTableStats extends Component {
+  render() {
+    let stats = this.props.stats.map(function(stat, idx) {
+      return <li key={idx}>{stat}</li>;
+    });
+    return stats.length > 0 ? <div><ul className="pageable-table-stats">{stats}</ul></div> : null;
+  }
+}
+PageableTableStats.defaultProps = {
+  stats: []
+};
