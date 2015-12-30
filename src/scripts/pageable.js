@@ -17,6 +17,15 @@ export default class PageableTable extends Component {
     rest(path).then((data) => this.setState({data: JSON.parse(data.entity).content}));
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.dataPath !== this.props.dataPath) {
+      let path = nextProps.dataPath;
+      path += path.indexOf('?') > -1 ? '&' : '?';
+      path += 'page=0' + (nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '');
+      rest(path).then(data => this.setState({data: JSON.parse(data.entity).content}));
+    }
+  }
+
   render() {
     let data = this.state.data.map(this.props.dataMapper);
     return (

@@ -50,6 +50,20 @@ var PageableTable = (function (_Component) {
       });
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      var _this3 = this;
+
+      if (nextProps.dataPath !== this.props.dataPath) {
+        var path = nextProps.dataPath;
+        path += path.indexOf('?') > -1 ? '&' : '?';
+        path += 'page=0' + (nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '');
+        (0, _rest2.default)(path).then(function (data) {
+          return _this3.setState({ data: JSON.parse(data.entity).content });
+        });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var data = this.state.data.map(this.props.dataMapper);
