@@ -42,9 +42,11 @@ var PageableTable = (function (_Component) {
     _this.state = {
       data: [],
       pageable: {
-        totalElements: 0,
-        numberOfElements: 0,
+        first: true,
+        last: true,
         number: 0,
+        numberOfElements: 0,
+        totalElements: 0,
         totalPages: 0
       }
     };
@@ -91,7 +93,7 @@ var PageableTable = (function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(PaginationLinks, null),
+        _react2.default.createElement(PaginationLinks, { onPageChange: this.props.onPageChange, pageable: this.state.pageable }),
         _react2.default.createElement(
           'table',
           { className: 'pageable-table ' + this.props.className },
@@ -120,7 +122,8 @@ PageableTable.defaultProps = {
   dataMapper: function dataMapper() {},
   dataPath: '/',
   sort: [],
-  tableHeader: function tableHeader() {}
+  tableHeader: function tableHeader() {},
+  onPageChange: function onPageChange() {}
 };
 
 var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
@@ -133,6 +136,13 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
   }
 
   _createClass(PaginationLinks, [{
+    key: 'onNext',
+    value: function onNext(e) {
+      e.preventDefault();
+      var page = this.props.pageable.number < this.props.pageable.totalPages - 1 ? this.props.pageable.number + 1 : this.props.pageable.number;
+      this.props.onPageChange(page);
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -143,23 +153,39 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
           { className: 'pagination-links' },
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link' },
-            'First'
+            { className: 'pagination-link', className: this.state.pageable.first ? 'disabled' : '' },
+            _react2.default.createElement(
+              'span',
+              null,
+              'First'
+            )
           ),
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link' },
-            'Previous'
+            { className: 'pagination-link', className: this.state.pageable.first ? 'disabled' : '' },
+            _react2.default.createElement(
+              'span',
+              null,
+              'Previous'
+            )
           ),
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link' },
-            'Next'
+            { className: 'pagination-link', className: this.state.pageable.last ? 'disabled' : '', onClick: this.onNext },
+            _react2.default.createElement(
+              'span',
+              null,
+              'Next'
+            )
           ),
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link' },
-            'Last'
+            { className: 'pagination-link', className: this.state.pageable.last ? 'disabled' : '' },
+            _react2.default.createElement(
+              'span',
+              null,
+              'Last'
+            )
           )
         )
       );
@@ -168,6 +194,18 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
 
   return PaginationLinks;
 })(_react.Component);
+
+PaginationLinks.defaultProps = {
+  onPageChange: function onPageChange() {},
+  pageable: {
+    first: true,
+    last: true,
+    number: 0,
+    numberOfElements: 0,
+    totalElements: 0,
+    totalPages: 0
+  }
+};
 
 var PageableTableStats = exports.PageableTableStats = (function (_Component3) {
   _inherits(PageableTableStats, _Component3);

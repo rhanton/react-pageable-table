@@ -55,7 +55,7 @@ export default class PageableTable extends Component {
 
     return (
       <div>
-        <PaginationLinks/>
+        <PaginationLinks onPageChange={this.props.onPageChange} pageable={this.state.pageable}/>
         <table className={'pageable-table ' + this.props.className}>
           <thead>{this.props.tableHeader()}</thead>
           <tbody>{data}</tbody>
@@ -69,23 +69,41 @@ PageableTable.defaultProps = {
   dataMapper: function() {},
   dataPath: '/',
   sort: [],
-  tableHeader: function() {}
+  tableHeader: function() {},
+  onPageChange: function() {}
 };
 
 export class PaginationLinks extends Component {
+  onNext(e) {
+    e.preventDefault();
+    let page = this.props.pageable.number < (this.props.pageable.totalPages - 1) ? this.props.pageable.number + 1 : this.props.pageable.number;
+    this.props.onPageChange(page);
+  }
+
   render() {
     return (
       <div className="pagination-links-container">
         <ul className="pagination-links">
           <li className="pagination-link" className={this.state.pageable.first ? 'disabled' : ''}><span>First</span></li>
           <li className="pagination-link" className={this.state.pageable.first ? 'disabled' : ''}><span>Previous</span></li>
-          <li className="pagination-link" className={this.state.pageable.last ? 'disabled' : ''}><span>Next</span></li>
+          <li className="pagination-link" className={this.state.pageable.last ? 'disabled' : ''} onClick={this.onNext}><span>Next</span></li>
           <li className="pagination-link" className={this.state.pageable.last ? 'disabled' : ''}><span>Last</span></li>
         </ul>
       </div>
     );
   }
 }
+PaginationLinks.defaultProps = {
+  onPageChange: function() {},
+  pageable: {
+    first: true,
+    last: true,
+    number: 0,
+    numberOfElements: 0,
+    totalElements: 0,
+    totalPages: 0
+  }
+};
 
 export class PageableTableStats extends Component {
   render() {
