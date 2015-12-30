@@ -8,15 +8,20 @@
 }
 
 .pagination-links {
-    display: inline-block;
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin: 20px 0;
 }
 
 .pagination-links .pagination-link {
     display: inline;
-    padding: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-right: 0;
+}
+
+.pagination-links .pagination-link:last-child {
+    border-right: 1px solid #ccc;
 }
 
 .pagination-links li.disabled a, .pagination-links li.disabled span {
