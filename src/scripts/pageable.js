@@ -10,9 +10,11 @@ export default class PageableTable extends Component {
     this.state = {
       data: [],
       pageable: {
-        totalElements: 0,
-        numberOfElements: 0,
+        first: true,
+        last: true,
         number: 0,
+        numberOfElements: 0,
+        totalElements: 0,
         totalPages: 0
       }
     };
@@ -75,10 +77,10 @@ export class PaginationLinks extends Component {
     return (
       <div className="pagination-links-container">
         <ul className="pagination-links">
-          <li className="pagination-link">First</li>
-          <li className="pagination-link">Previous</li>
-          <li className="pagination-link">Next</li>
-          <li className="pagination-link">Last</li>
+          <li className="pagination-link" className={this.state.pageable.first ? 'disabled' : ''}><span>First</span></li>
+          <li className="pagination-link" className={this.state.pageable.first ? 'disabled' : ''}><span>Previous</span></li>
+          <li className="pagination-link" className={this.state.pageable.last ? 'disabled' : ''}><span>Next</span></li>
+          <li className="pagination-link" className={this.state.pageable.last ? 'disabled' : ''}><span>Last</span></li>
         </ul>
       </div>
     );
