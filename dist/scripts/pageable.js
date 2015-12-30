@@ -156,7 +156,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
           { className: 'pagination-links' },
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link', className: this.props.pageable.first ? 'disabled' : '' },
+            { className: 'pagination-link ' + (this.props.pageable.first ? 'disabled' : '') },
             _react2.default.createElement(
               'span',
               null,
@@ -165,7 +165,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
           ),
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link', className: this.props.pageable.first ? 'disabled' : '' },
+            { className: 'pagination-link ' + (this.props.pageable.first ? 'disabled' : '') },
             _react2.default.createElement(
               'span',
               null,
@@ -174,7 +174,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
           ),
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link', className: this.props.pageable.last ? 'disabled' : '', onClick: this.onNext },
+            { className: 'pagination-link ' + (this.props.pageable.last ? 'disabled' : ''), onClick: this.onNext },
             _react2.default.createElement(
               'span',
               null,
@@ -183,7 +183,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
           ),
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link', className: this.props.pageable.last ? 'disabled' : '' },
+            { className: 'pagination-link ' + (this.props.pageable.last ? 'disabled' : '') },
             _react2.default.createElement(
               'span',
               null,

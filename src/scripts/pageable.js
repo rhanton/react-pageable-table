@@ -90,10 +90,10 @@ export class PaginationLinks extends Component {
     return (
       <div className="pagination-links-container">
         <ul className="pagination-links">
-          <li className="pagination-link" className={this.props.pageable.first ? 'disabled' : ''}><span>First</span></li>
-          <li className="pagination-link" className={this.props.pageable.first ? 'disabled' : ''}><span>Previous</span></li>
-          <li className="pagination-link" className={this.props.pageable.last ? 'disabled' : ''} onClick={this.onNext}><span>Next</span></li>
-          <li className="pagination-link" className={this.props.pageable.last ? 'disabled' : ''}><span>Last</span></li>
+          <li className={'pagination-link ' + (this.props.pageable.first ? 'disabled' : '')}><span>First</span></li>
+          <li className={'pagination-link ' + (this.props.pageable.first ? 'disabled' : '')}><span>Previous</span></li>
+          <li className={'pagination-link ' + (this.props.pageable.last ? 'disabled' : '')} onClick={this.onNext}><span>Next</span></li>
+          <li className={'pagination-link ' + (this.props.pageable.last ? 'disabled' : '')}><span>Last</span></li>
         </ul>
       </div>
     );
