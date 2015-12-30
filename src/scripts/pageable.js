@@ -32,7 +32,7 @@ export default class PageableTable extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.dataPath !== this.props.dataPath || nextProps.page !== this.state.pageable.number) {
+    if(nextProps.dataPath !== this.props.dataPath && nextProps.page !== this.state.pageable.number) {
       let path = nextProps.dataPath;
       path += path.indexOf('?') > -1 ? '&' : '?';
       path += 'page=' + nextProps.page + (nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '');
