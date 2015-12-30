@@ -72,10 +72,10 @@ var PageableTable = (function (_Component) {
     value: function componentWillReceiveProps(nextProps) {
       var _this3 = this;
 
-      if (nextProps.dataPath !== this.props.dataPath && nextProps.page !== this.state.pageable.number) {
+      if (nextProps.dataPath !== this.props.dataPath) {
         var path = nextProps.dataPath;
         path += path.indexOf('?') > -1 ? '&' : '?';
-        path += 'page=' + nextProps.page + (nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '');
+        path += nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '';
         (0, _rest2.default)(path).then(function (data) {
           var pageable = (0, _objectAssign2.default)({}, JSON.parse(data.entity));
           delete pageable.content;
