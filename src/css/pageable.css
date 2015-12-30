@@ -13,7 +13,7 @@
     margin: 20px 0;
 }
 
-.pagination-links .pagination-link {
+.pagination-link {
     display: inline;
     padding: 10px;
     border: 1px solid #ccc;
@@ -21,12 +21,17 @@
     cursor: pointer;
 }
 
-.pagination-links .pagination-link:last-child {
+.pagination-link:hover {
+    background: #eee;
+}
+
+.pagination-link:last-child {
     border-right: 1px solid #ccc;
 }
 
-.pagination-links li.disabled a, .pagination-links li.disabled span {
+.pagination-link.disabled {
     cursor: not-allowed;
+    color: #ccc;
 }
 
 .pageable-table-stats {

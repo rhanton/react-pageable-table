@@ -80,20 +80,36 @@ export class PaginationLinks extends Component {
     this.onNext = this.onNext.bind(this);
   }
 
+  onFirst(e) {
+    e.preventDefault();
+    this.props.onPageChange(0);
+  }
+
+  onPrevious(e) {
+    e.preventDefault();
+    let page = this.props.pageable.number > 0 ? this.props.pageable.number - 1 : 0;
+    this.props.onPageChange(page);
+  }
+
   onNext(e) {
     e.preventDefault();
     let page = this.props.pageable.number < (this.props.pageable.totalPages - 1) ? this.props.pageable.number + 1 : this.props.pageable.number;
     this.props.onPageChange(page);
   }
 
+  onLast(e) {
+    e.preventDefault();
+    this.props.onPageChange(this.props.pageable.totalPages - 1);
+  }
+
   render() {
     return (
       <div className="pagination-links-container">
         <ul className="pagination-links">
-          <li className={'pagination-link ' + (this.props.pageable.first ? 'disabled' : '')}><span>First</span></li>
-          <li className={'pagination-link ' + (this.props.pageable.first ? 'disabled' : '')}><span>Previous</span></li>
+          <li className={'pagination-link ' + (this.props.pageable.first ? 'disabled' : '')} onClick={this.onFirst}><span>First</span></li>
+          <li className={'pagination-link ' + (this.props.pageable.first ? 'disabled' : '')} onClick={this.onPrevious}><span>Previous</span></li>
           <li className={'pagination-link ' + (this.props.pageable.last ? 'disabled' : '')} onClick={this.onNext}><span>Next</span></li>
-          <li className={'pagination-link ' + (this.props.pageable.last ? 'disabled' : '')}><span>Last</span></li>
+          <li className={'pagination-link ' + (this.props.pageable.last ? 'disabled' : '')} onClick={this.onLast}><span>Last</span></li>
         </ul>
       </div>
     );

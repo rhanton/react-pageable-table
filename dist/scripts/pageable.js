@@ -139,11 +139,30 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
   }
 
   _createClass(PaginationLinks, [{
+    key: 'onFirst',
+    value: function onFirst(e) {
+      e.preventDefault();
+      this.props.onPageChange(0);
+    }
+  }, {
+    key: 'onPrevious',
+    value: function onPrevious(e) {
+      e.preventDefault();
+      var page = this.props.pageable.number > 0 ? this.props.pageable.number - 1 : 0;
+      this.props.onPageChange(page);
+    }
+  }, {
     key: 'onNext',
     value: function onNext(e) {
       e.preventDefault();
       var page = this.props.pageable.number < this.props.pageable.totalPages - 1 ? this.props.pageable.number + 1 : this.props.pageable.number;
       this.props.onPageChange(page);
+    }
+  }, {
+    key: 'onLast',
+    value: function onLast(e) {
+      e.preventDefault();
+      this.props.onPageChange(this.props.pageable.totalPages - 1);
     }
   }, {
     key: 'render',
@@ -156,7 +175,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
           { className: 'pagination-links' },
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link ' + (this.props.pageable.first ? 'disabled' : '') },
+            { className: 'pagination-link ' + (this.props.pageable.first ? 'disabled' : ''), onClick: this.onFirst },
             _react2.default.createElement(
               'span',
               null,
@@ -165,7 +184,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
           ),
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link ' + (this.props.pageable.first ? 'disabled' : '') },
+            { className: 'pagination-link ' + (this.props.pageable.first ? 'disabled' : ''), onClick: this.onPrevious },
             _react2.default.createElement(
               'span',
               null,
@@ -183,7 +202,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
           ),
           _react2.default.createElement(
             'li',
-            { className: 'pagination-link ' + (this.props.pageable.last ? 'disabled' : '') },
+            { className: 'pagination-link ' + (this.props.pageable.last ? 'disabled' : ''), onClick: this.onLast },
             _react2.default.createElement(
               'span',
               null,
