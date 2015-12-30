@@ -61,6 +61,11 @@ var PageableTable = (function (_Component) {
           'table',
           { className: 'pageable-table ' + this.props.className },
           _react2.default.createElement(
+            'thead',
+            null,
+            this.props.tableHeader()
+          ),
+          _react2.default.createElement(
             'tbody',
             null,
             data
@@ -78,7 +83,8 @@ exports.default = PageableTable;
 PageableTable.defaultProps = {
   dataMapper: function dataMapper() {},
   dataPath: '/',
-  sort: []
+  sort: [],
+  tableHeader: function tableHeader() {}
 };
 
 var Pagination = exports.Pagination = (function (_Component2) {

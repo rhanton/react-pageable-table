@@ -23,6 +23,7 @@ export default class PageableTable extends Component {
       <div>
         <Pagination/>
         <table className={'pageable-table ' + this.props.className}>
+          <thead>{this.props.tableHeader()}</thead>
           <tbody>{data}</tbody>
         </table>
       </div>
@@ -32,7 +33,8 @@ export default class PageableTable extends Component {
 PageableTable.defaultProps = {
   dataMapper: function() {},
   dataPath: '/',
-  sort: []
+  sort: [],
+  tableHeader: function() {}
 };
 
 export class Pagination extends Component {
