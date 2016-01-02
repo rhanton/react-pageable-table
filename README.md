@@ -12,7 +12,7 @@ Simply add the `<PageableTable/>` component to your own components as follows.
 ### Data Path
 The `dataPath` is a simple URL where the pageable table can fetch data from.  In your own component, you should
 update `dataPath` whenever you want `<PageableTable/>` to show new data.  For example when changing page via
-the `onPageChange` handler [see below](#page-change-handler) or view the [example](example/app/scripts/app.js) for details).
+the `onPageChange` handler ([see below](#page-change-handler) or view the [example](example/app/scripts/app.js) for details).
 
 Pageable table will expect the server response to look like the following in order to properly construct pagination links.
 Notice the actual data is contained within the "contents" property.  Then we have pagination related properties.
