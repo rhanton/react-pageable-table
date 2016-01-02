@@ -1,0 +1,13 @@
+{
+  "content": [
+    {"id": "1000000", "name": "Darth Vader", "description": "Darth Vader, born Anakin Skywalker, is a fictional character in the Star Wars universe."},
+    {"id": "1000001", "name": "Luke Skywalker", "description": "Luke Skywalker is a fictional character appearing as the central protagonist of the original film trilogy and as a minor character in the prequel trilogy of the Star Wars universe created by George Lucas."},
+    {"id": "1000002", "name": "Han Solo", "description": "Han Solo is a fictional character in the Star Wars franchise, portrayed in films by Harrison Ford."}
+  ],
+  "first": true,
+  "last": true,
+  "number": 0,
+  "numberOfElements": 3,
+  "totalElements": 3,
+  "totalPages" : 1
+}
