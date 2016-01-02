@@ -17,13 +17,13 @@ Simply add the `<PageableTable/>` component to your own components as follows.
 == Properties
 
 === Data Path
-The ```dataPath``` is a simple URL where the pageable table can fetch data from.  In your own component, you should
-update ```dataPath``` whenever you want ```<PageableTable/>``` to show new data.  For example when changing page via
-the ```onPageChange``` handler (see below). ad-link
+The `dataPath` is a simple URL where the pageable table can fetch data from.  In your own component, you should
+update `dataPath` whenever you want `<PageableTable/>` to show new data.  For example when changing page via
+the `onPageChange` handler (see below). ad-link
 
 === Data Mapper
-The ```dataMapper``` should tell ```<PageableTable/>``` how to construct a single data row.  It accepts 2 arguments, first
-an object representing data for 1 row, and second an index that you should apply to the ```<tr>``` element.
+The `dataMapper` should tell `<PageableTable/>` how to construct a single data row.  It accepts 2 arguments, first
+an object representing data for 1 row, and second an index that you should apply to the `<tr>` element.
 
 [source,javascript]
 ----
@@ -39,7 +39,7 @@ dataMapper(sw, idx) {
 ----
 
 === Table Header
-The ```tableHeader``` should construct a header row.
+The `tableHeader` should construct a header row.
 
 [source,javascript]
 ----
@@ -55,8 +55,8 @@ tableHeader() {
 ----
 
 === Page Change Handler
-The page change handler should result in an updated ```dataPath``` that will cause your component to call it's ```render()```
-method, passing the new ```dataPath``` value to ```<PageableTable/>```.
+The page change handler should result in an updated `dataPath` that will cause your component to call it's `render()`
+method, passing the new `dataPath` value to `<PageableTable/>`.
 [source,javascript]
 ----
 handlePageChange: function(page) {
@@ -70,7 +70,7 @@ handlePageChange: function(page) {
 ----
 
 === Sort
-The ```sort``` property can be used to pass an array of sorting arguments which will be concatenated with the ```dataPath```.
+The `sort` property can be used to pass an array of sorting arguments which will be concatenated with the `dataPath`.
 Your backend will need to know how to accept these arguments as query parameters.
 
 In
@@ -88,8 +88,8 @@ http://www.example.com/api/orders?page=0&sort=data,desc&sort=number,asc
 ----
 
 === Styling
-Passing a ```className``` property to ```<PageableTable/>``` will append the value to the ```className``` property of the
-underlying ```<table>``` element.
+Passing a `className` property to `<PageableTable/>` will append the value to the `className` property of the
+underlying `<table>` element.
 
 In
 
