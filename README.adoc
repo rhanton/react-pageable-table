@@ -7,7 +7,7 @@ v1.1.0, 2016-01-02
 :revnumber: {docVersion}
 
 == Usage
-Simply add the ```<PageableTable/>``` component to your own components as follows.
+Simply add the `<PageableTable/>` component to your own components as follows.
 
 [source,javascript]
 ----
