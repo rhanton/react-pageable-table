@@ -15,13 +15,13 @@ var _rest = require('rest');
 
 var _rest2 = _interopRequireDefault(_rest);
 
-var _objectAssign = require('object-assign');
-
-var _objectAssign2 = _interopRequireDefault(_objectAssign);
-
 var _numeral = require('numeral');
 
 var _numeral2 = _interopRequireDefault(_numeral);
+
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31,62 +31,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function splitTable(original) {
-  var tableWrapper = document.createElement('div');
-  tableWrapper.setAttribute('class', 'table-wrapper');
-
-  var copy = original.clone();
-  copy.querySelectorAll('td:not(:first-child), th:not(:first-child').style.display = 'none';
-
-  tableWrapper.appendChild(copy);
-  var pinned = document.createElement('div');
-  pinned.setAttribute('class', 'pinned');
-  pinned.appendChild(copy);
-
-  var scrollable = document.createElement('div');
-  scrollable.setAttribute('class', 'scrollable');
-  scrollable.appendChild(original);
-
-  setCellHeights(original, copy);
-}
-
-function unsplitTable(original) {
-  document.querySelector('.table-wrapper').removeChild(document.querySelector('.pinned'));
-  //original.unwrap();
-  //original.unwrap();
-}
-
-function setCellHeights(original, copy) {
-  var _this = this;
-
-  var tr = original.querySelectorAll('tr'),
-      tr_copy = copy.querySelectorAll('tr'),
-      heights = [];
-
-  tr.forEach(function (index) {
-    var tx = _this.querySelectorAll('th, td');
-
-    tx.forEach(function () {
-      var height = _react2.default.findDOMNode(_this).offsetHeight;
-      heights[index] = heights[index] || 0;
-      if (height > heights[index]) heights[index] = height;
-    });
-  });
-
-  tr_copy.forEach(function (index) {
-    _react2.default.findDOMNode(_this).offsetHeight = heights[index];
-  });
-}
-
 var PageableTable = (function (_Component) {
   _inherits(PageableTable, _Component);
 
   function PageableTable(props) {
     _classCallCheck(this, PageableTable);
 
-    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(PageableTable).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PageableTable).call(this, props));
 
-    _this2.state = {
+    _this.state = {
       data: [],
       pageable: {
         first: true,
@@ -96,27 +49,20 @@ var PageableTable = (function (_Component) {
         totalElements: 0,
         totalPages: 0
       },
-      switched: false
+      responsive: false
     };
-    return _this2;
+    return _this;
   }
 
   _createClass(PageableTable, [{
     key: 'updateTable',
     value: function updateTable() {
-      var el = _react2.default.findDOMNode(this.refs.table);
-      if (window.outerWidth < 767 && !this.state.switched) {
-        this.setState({ switched: true });
-        splitTable(el);
-      } else {
-        this.setState({ switched: false });
-        unsplitTable(el);
-      }
+      this.setState({ responsive: window.outerWidth < 767 });
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this2 = this;
 
       var path = this.props.dataPath;
       path += path.indexOf('?') > -1 ? '&' : '?';
@@ -124,11 +70,10 @@ var PageableTable = (function (_Component) {
       (0, _rest2.default)(path).then(function (data) {
         var pageable = (0, _objectAssign2.default)({}, JSON.parse(data.entity));
         delete pageable.content;
-        _this3.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
+        _this2.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
+        _this2.updateTable();
+        window.addEventListener('resize', _this2.updateTable.bind(_this2));
       });
-
-      this.updateTable();
-      window.addEventListener('resize', this.updateTable);
     }
   }, {
     key: 'componentWillUnmount',
@@ -138,7 +83,7 @@ var PageableTable = (function (_Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      var _this4 = this;
+      var _this3 = this;
 
       if (nextProps.dataPath !== this.props.dataPath) {
         var path = nextProps.dataPath;
@@ -147,8 +92,27 @@ var PageableTable = (function (_Component) {
         (0, _rest2.default)(path).then(function (data) {
           var pageable = (0, _objectAssign2.default)({}, JSON.parse(data.entity));
           delete pageable.content;
-          _this4.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
+          _this3.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
         });
+      }
+    }
+  }, {
+    key: 'componentWillUpdate',
+    value: function componentWillUpdate(nextProps, nextState) {
+      if (nextState.responsive) {
+        var copy = _react2.default.findDOMNode(this.refs.table).cloneNode(true);
+        var columnsToHide = copy.querySelectorAll('td:not(:first-child), th:not(:first-child)');
+        for (var x = 0; x < columnsToHide.length; x++) {
+          columnsToHide[x].style.display = 'none';
+        }
+
+        var pinned = _react2.default.findDOMNode(this.refs.pinned);
+        if (pinned.childNodes.length === 0) pinned.appendChild(copy);
+      } else {
+        var pinned = _react2.default.findDOMNode(this.refs.pinned);
+        while (pinned.firstChild) {
+          pinned.removeChild(pinned.firstChild);
+        }
       }
     }
   }, {
@@ -163,18 +127,32 @@ var PageableTable = (function (_Component) {
         null,
         _react2.default.createElement(PaginationLinks, { onPageChange: this.props.onPageChange, pageable: this.state.pageable }),
         _react2.default.createElement(
-          'table',
-          { ref: 'table', className: 'pageable-table ' + this.props.className },
+          'h2',
+          null,
+          this.state.responsive ? 'Responsive' : 'Not Responsive'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: this.state.responsive ? 'responsive' : '' },
           _react2.default.createElement(
-            'thead',
-            null,
-            this.props.tableHeader()
+            'div',
+            { className: this.state.responsive ? 'scrollable' : '' },
+            _react2.default.createElement(
+              'table',
+              { ref: 'table', className: 'pageable-table ' + (typeof this.props.className !== 'undefined' ? this.props.className : '') },
+              _react2.default.createElement(
+                'thead',
+                null,
+                this.props.tableHeader()
+              ),
+              _react2.default.createElement(
+                'tbody',
+                null,
+                data
+              )
+            )
           ),
-          _react2.default.createElement(
-            'tbody',
-            null,
-            data
-          )
+          _react2.default.createElement('div', { ref: 'pinned', className: 'pinned' })
         ),
         _react2.default.createElement(PageableTableStats, { stats: stats })
       );
@@ -199,7 +177,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
   function PaginationLinks() {
     var _Object$getPrototypeO;
 
-    var _temp, _this5, _ret;
+    var _temp, _this4, _ret;
 
     _classCallCheck(this, PaginationLinks);
 
@@ -207,21 +185,21 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this5 = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(PaginationLinks)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this5), _this5.onFirst = function (e) {
+    return _ret = (_temp = (_this4 = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(PaginationLinks)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this4), _this4.onFirst = function (e) {
       e.preventDefault();
-      _this5.props.onPageChange(0);
-    }, _this5.onPrevious = function (e) {
+      _this4.props.onPageChange(0);
+    }, _this4.onPrevious = function (e) {
       e.preventDefault();
-      var page = _this5.props.pageable.number > 0 ? _this5.props.pageable.number - 1 : 0;
-      _this5.props.onPageChange(page);
-    }, _this5.onNext = function (e) {
+      var page = _this4.props.pageable.number > 0 ? _this4.props.pageable.number - 1 : 0;
+      _this4.props.onPageChange(page);
+    }, _this4.onNext = function (e) {
       e.preventDefault();
-      var page = _this5.props.pageable.number < _this5.props.pageable.totalPages - 1 ? _this5.props.pageable.number + 1 : _this5.props.pageable.number;
-      _this5.props.onPageChange(page);
-    }, _this5.onLast = function (e) {
+      var page = _this4.props.pageable.number < _this4.props.pageable.totalPages - 1 ? _this4.props.pageable.number + 1 : _this4.props.pageable.number;
+      _this4.props.onPageChange(page);
+    }, _this4.onLast = function (e) {
       e.preventDefault();
-      _this5.props.onPageChange(_this5.props.pageable.totalPages - 1);
-    }, _temp), _possibleConstructorReturn(_this5, _ret);
+      _this4.props.onPageChange(_this4.props.pageable.totalPages - 1);
+    }, _temp), _possibleConstructorReturn(_this4, _ret);
   }
 
   _createClass(PaginationLinks, [{
