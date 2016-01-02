@@ -12,47 +12,7 @@ a minimum, you should provide values for the ```dataPath```, ```dataMapper``` an
 
 [source,javascript]
 ----
-import PageableTable from 'react-pageable-table';
-
-export default class App extends Component {
-  tableHeader() {
-    return (
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    );
-  }
-
-  dataMapper(sw, idx) {
-    return (
-      <tr key={idx}>
-        <td>{sw.id}</td>
-        <td>{sw.name}</td>
-        <td>{sw.description}</td>
-      </tr>
-    );
-  }
-
-  handlePageChange: function(page) {
-    /*
-     * Use the value of "page" to construct a new dataPath, which will result in this component calling it's render()
-     * method again, causing PageableTable to retrieve new data.
-     */
-  },
-
-  render() {
-    let dataPath = this.state.dataPath;
-
-    return (
-      <div className="row">
-        <h1>Table Wars</h1>
-        <PageableTable dataPath={dataPath} dataMapper={this.dataMapper} tableHeader={this.tableHeader}  onPageChange={this.handlePageChange}/>
-      </div>
-    );
-  }
-}
+<PageableTable dataPath={dataPath} dataMapper={this.dataMapper} tableHeader={this.tableHeader}  onPageChange={this.handlePageChange}/>
 ----
 
 == Properties
