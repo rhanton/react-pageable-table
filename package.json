@@ -3,7 +3,6 @@
   "version": "1.1.0",
   "description": "React pageable table component",
   "main": "dist/scripts/pageable.js",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/pgrimard/react-pageable-table.git"
