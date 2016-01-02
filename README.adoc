@@ -24,12 +24,6 @@ the `onPageChange` handler (link:#page-change-handler[see below] or view the lin
 Pageable table will expect the server response to look like the following in order to properly construct pagination links.
 Notice the actual data is contained within the "contents" property.  Then we have pagination related properties.
 
-.Spring Framework Users
-[TIP]
-If you're using the http://spring.io[Spring Framework] and http://projects.spring.io/spring-data-rest/[Spring Data Rest],
-with `Page` collections and `Pageable` request mapping parameters, then you can expect `<PageableTable/>` to work with
-your server response out of the box since that's what it was modeled on.
-
 [source,javascript]
 ----
 {
@@ -46,6 +40,12 @@ your server response out of the box since that's what it was modeled on.
   "totalPages" : 1
 }
 ----
+
+.Spring Framework Users
+[TIP]
+If you're using the http://spring.io[Spring Framework] and http://projects.spring.io/spring-data-rest/[Spring Data Rest],
+with `Page` collections and `Pageable` request mapping parameters, then you can expect `<PageableTable/>` to work with
+your server response out of the box since that's what it was modeled on.
 
 === Data Mapper
 The `dataMapper` should tell `<PageableTable/>` how to construct a single data row.  It accepts 2 arguments, first
