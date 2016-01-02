@@ -21,6 +21,32 @@ The `dataPath` is a simple URL where the pageable table can fetch data from.  In
 update `dataPath` whenever you want `<PageableTable/>` to show new data.  For example when changing page via
 the `onPageChange` handler (link:#page-change-handler[see below] or view the link:example/app/scripts/app.js[example] for details).
 
+Pageable table will expect the server response to look like the following in order to properly construct pagination links.
+Notice the actual data is contained within the "contents" property.  Then we have pagination related properties.
+
+.Spring Framework Users
+[TIP]
+If you're using the http://spring.io[Spring Framework] and http://projects.spring.io/spring-data-rest/[Spring Data Rest],
+with `Page` collections and `Pageable` request mapping parameters, then you can expect `<PageableTable/>` to work with
+your server response out of the box since that's what it was modeled on.
+
+[source,javascript]
+----
+{
+  "content": [
+    {"id": "1000000", "name": "Darth Vader", "description": "Darth Vader, born Anakin Skywalker, is a fictional character in the Star Wars universe."},
+    {"id": "1000001", "name": "Luke Skywalker", "description": "Luke Skywalker is a fictional character appearing as the central protagonist of the original film trilogy and as a minor character in the prequel trilogy of the Star Wars universe created by George Lucas."},
+    {"id": "1000002", "name": "Han Solo", "description": "Han Solo is a fictional character in the Star Wars franchise, portrayed in films by Harrison Ford."}
+  ],
+  "first": true,
+  "last": true,
+  "number": 0,
+  "numberOfElements": 3,
+  "totalElements": 3,
+  "totalPages" : 1
+}
+----
+
 === Data Mapper
 The `dataMapper` should tell `<PageableTable/>` how to construct a single data row.  It accepts 2 arguments, first
 an object representing data for 1 row, and second an index that you should apply to the `<tr>` element.
