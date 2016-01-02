@@ -1,0 +1,56 @@
+= React Pageable Table
+Patrick Grimard <pgrimard@gmail.com>
+v1.1.0, 2016-01-02
+:toc:
+:imagesdir: assets/images
+:homepage: http://patrickgrimard.com
+:revnumber: {docVersion}
+
+== Usage
+Using React Pageable Table is as simple as including the ```<PageableTable/>``` component in your own component.  The
+only required properties are a ```dataPath```, ```dataMapper```, and ```tableHeader```.
+
+[source,javascript]
+----
+import PageableTable from 'react-pageable-table';
+
+export default class App extends Component {
+  tableHeader() {
+    return (
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    );
+  }
+
+  dataMapper(sw, idx) {
+    return (
+      <tr key={idx}>
+        <td>{sw.id}</td>
+        <td>{sw.name}</td>
+        <td>{sw.description}</td>
+      </tr>
+    );
+  }
+
+  render() {
+    return (
+      <div className="row">
+        <h1>Table Wars</h1>
+        <PageableTable dataPath="data/data.json" dataMapper={this.dataMapper} tableHeader={this.tableHeader}/>
+      </div>
+    );
+  }
+}
+----
+
+== Data Path
+The ```dataPath``` is a simple URL where the pageable table can fetch data from.
+
+== Data Mapper
+The ```dataMapper``` is used to map a single data object to a table row.
+
+== Table Header
+The ```tableHeader``` is used to construct a table header row.
