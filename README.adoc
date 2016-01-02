@@ -7,8 +7,7 @@ v1.1.0, 2016-01-02
 :revnumber: {docVersion}
 
 == Usage
-Using React Pageable Table is as simple as including the ```<PageableTable/>``` component in your own component.  At
-a minimum, you should provide values for the ```dataPath```, ```dataMapper``` and ```onPageChange``` handler.
+Simply add the ```<PageableTable/>``` component to your own components as follows.
 
 [source,javascript]
 ----
