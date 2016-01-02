@@ -1,53 +1,7 @@
 import React, {Component} from 'react';
 import rest from 'rest';
-import assign from 'object-assign';
 import numeral from 'numeral';
-
-function splitTable(original) {
-  let tableWrapper = document.createElement('div');
-  tableWrapper.setAttribute('class', 'table-wrapper');
-
-  let copy = original.clone();
-  copy.querySelectorAll('td:not(:first-child), th:not(:first-child').style.display = 'none';
-
-  tableWrapper.appendChild(copy);
-  let pinned = document.createElement('div');
-  pinned.setAttribute('class', 'pinned');
-  pinned.appendChild(copy);
-
-  let scrollable = document.createElement('div');
-  scrollable.setAttribute('class', 'scrollable');
-  scrollable.appendChild(original);
-
-  setCellHeights(original, copy);
-}
-
-function unsplitTable(original) {
-  document.querySelector('.table-wrapper').removeChild(document.querySelector('.pinned'));
-  //original.unwrap();
-  //original.unwrap();
-}
-
-function setCellHeights(original, copy) {
-  var tr = original.querySelectorAll('tr'),
-    tr_copy = copy.querySelectorAll('tr'),
-    heights = [];
-
-  tr.forEach(index => {
-    let tx = this.querySelectorAll('th, td');
-
-    tx.forEach(() => {
-      let height = React.findDOMNode(this).offsetHeight;
-      heights[index] = heights[index] || 0;
-      if (height > heights[index]) heights[index] = height;
-    });
-
-  });
-
-  tr_copy.forEach(index => {
-    React.findDOMNode(this).offsetHeight = heights[index];
-  });
-}
+import assign from 'object-assign';
 
 export default class PageableTable extends Component {
   static defaultProps = {
@@ -71,19 +25,12 @@ export default class PageableTable extends Component {
         totalElements: 0,
         totalPages: 0
       },
-      switched: false
+      responsive: false
     };
   }
 
   updateTable() {
-    let el = React.findDOMNode(this.refs.table);
-    if(window.outerWidth < 767 && !this.state.switched) {
-      this.setState({switched: true});
-      splitTable(el);
-    } else {
-      this.setState({switched: false});
-      unsplitTable(el);
-    }
+    this.setState({responsive: window.outerWidth < 767});
   }
 
   componentDidMount() {
@@ -93,11 +40,10 @@ export default class PageableTable extends Component {
     rest(path).then(data => {
       let pageable = assign({}, JSON.parse(data.entity));
       delete pageable.content;
-      this.setState({data: JSON.parse(data.entity).content, pageable: pageable})
+      this.setState({data: JSON.parse(data.entity).content, pageable: pageable});
+      this.updateTable();
+      window.addEventListener('resize', this.updateTable.bind(this));
     });
-
-    this.updateTable();
-    window.addEventListener('resize', this.updateTable);
   }
 
   componentWillUnmount() {
@@ -117,6 +63,25 @@ export default class PageableTable extends Component {
     }
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if(nextState.responsive) {
+      let copy = React.findDOMNode(this.refs.table).cloneNode(true);
+      let columnsToHide = copy.querySelectorAll('td:not(:first-child), th:not(:first-child)');
+      for(let x=0; x<columnsToHide.length; x++) {
+        columnsToHide[x].style.display = 'none';
+      }
+
+      let pinned = React.findDOMNode(this.refs.pinned);
+      if(pinned.childNodes.length === 0)
+        pinned.appendChild(copy);
+    } else {
+      let pinned = React.findDOMNode(this.refs.pinned);
+      while(pinned.firstChild) {
+        pinned.removeChild(pinned.firstChild);
+      }
+    }
+  }
+
   render() {
     let data = this.state.data.map(this.props.dataMapper);
 
@@ -129,10 +94,16 @@ export default class PageableTable extends Component {
     return (
       <div>
         <PaginationLinks onPageChange={this.props.onPageChange} pageable={this.state.pageable}/>
-        <table ref="table" className={'pageable-table ' + this.props.className}>
-          <thead>{this.props.tableHeader()}</thead>
-          <tbody>{data}</tbody>
-        </table>
+        <h2>{this.state.responsive ? 'Responsive' : 'Not Responsive'}</h2>
+        <div className={this.state.responsive ? 'responsive' : ''}>
+          <div className={this.state.responsive ? 'scrollable' : ''}>
+            <table ref="table" className={'pageable-table ' + (typeof this.props.className !== 'undefined' ? this.props.className : '')}>
+              <thead>{this.props.tableHeader()}</thead>
+              <tbody>{data}</tbody>
+            </table>
+          </div>
+          <div ref="pinned" className="pinned"></div>
+        </div>
         <PageableTableStats stats={stats}/>
       </div>
     );
