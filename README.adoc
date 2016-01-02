@@ -87,12 +87,13 @@ method, passing the new `dataPath` value to `<PageableTable/>`.
 ----
 handlePageChange: function(page) {
   // Do something with "page" that causes dataPath to update.
+  this.setState({dataPath: this.state.dataPath + '?page=' + page});
 },
 ----
 
 [source,javascript]
 ----
-<PageableTable dataPath={dataPath} onPageChange={this.handlePageChange}/>
+<PageableTable dataPath={this.state.dataPath} onPageChange={this.handlePageChange}/>
 ----
 
 === Sort
