@@ -7,8 +7,8 @@ v1.1.0, 2016-01-02
 :revnumber: {docVersion}
 
 == Usage
-Using React Pageable Table is as simple as including the ```<PageableTable/>``` component in your own component.  The
-only required properties are a ```dataPath```, ```dataMapper```, and ```tableHeader```.
+Using React Pageable Table is as simple as including the ```<PageableTable/>``` component in your own component.  At
+a minimum, you should provide values for the ```dataPath```, ```dataMapper``` and ```onPageChange``` handler.
 
 [source,javascript]
 ----
@@ -35,22 +35,113 @@ export default class App extends Component {
     );
   }
 
+  handlePageChange: function(page) {
+    /*
+     * Use the value of "page" to construct a new dataPath, which will result in this component calling it's render()
+     * method again, causing PageableTable to retrieve new data.
+     */
+  },
+
   render() {
+    let dataPath = this.state.dataPath;
+
     return (
       <div className="row">
         <h1>Table Wars</h1>
-        <PageableTable dataPath="data/data.json" dataMapper={this.dataMapper} tableHeader={this.tableHeader}/>
+        <PageableTable dataPath={dataPath} dataMapper={this.dataMapper} tableHeader={this.tableHeader}  onPageChange={this.handlePageChange}/>
       </div>
     );
   }
 }
 ----
 
-== Data Path
-The ```dataPath``` is a simple URL where the pageable table can fetch data from.
+== Properties
 
-== Data Mapper
-The ```dataMapper``` is used to map a single data object to a table row.
+=== Data Path
+The ```dataPath``` is a simple URL where the pageable table can fetch data from.  In your own component, you should
+update ```dataPath``` whenever you want ```<PageableTable/>``` to show new data.  For example when changing page via
+the ```onPageChange``` handler (see below). ad-link
 
-== Table Header
-The ```tableHeader``` is used to construct a table header row.
+=== Data Mapper
+The ```dataMapper``` should tell ```<PageableTable/>``` how to construct a single data row.  It accepts 2 arguments, first
+an object representing data for 1 row, and second an index that you should apply to the ```<tr>``` element.
+
+[source,javascript]
+----
+dataMapper(sw, idx) {
+  return (
+    <tr key={idx}>
+      <td>{sw.id}</td>
+      <td>{sw.name}</td>
+      <td>{sw.description}</td>
+    </tr>
+  );
+}
+----
+
+=== Table Header
+The ```tableHeader``` should construct a header row.
+
+[source,javascript]
+----
+tableHeader() {
+  return (
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  );
+}
+----
+
+=== Page Change Handler
+The page change handler should result in an updated ```dataPath``` that will cause your component to call it's ```render()```
+method, passing the new ```dataPath``` value to ```<PageableTable/>```.
+[source,javascript]
+----
+handlePageChange: function(page) {
+  // Do something with "page" that causes dataPath to update.
+},
+----
+
+[source,javascript]
+----
+<PageableTable dataPath={dataPath} onPageChange={this.handlePageChange}/>
+----
+
+=== Sort
+The ```sort``` property can be used to pass an array of sorting arguments which will be concatenated with the ```dataPath```.
+Your backend will need to know how to accept these arguments as query parameters.
+
+In
+
+[source,javascript]
+----
+<PageableTable sort={[date,desc], [number,asc]}/>
+----
+
+Out
+
+[source]
+----
+http://www.example.com/api/orders?page=0&sort=data,desc&sort=number,asc
+----
+
+=== Styling
+Passing a ```className``` property to ```<PageableTable/>``` will append the value to the ```className``` property of the
+underlying ```<table>``` element.
+
+In
+
+[source,javascript]
+----
+<PageableTable className="my-class"/>
+----
+
+Out
+
+[source,html]
+----
+<table className="my-class">
+----
