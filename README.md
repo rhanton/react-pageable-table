@@ -15,7 +15,7 @@ update `dataPath` whenever you want `<PageableTable/>` to show new data.  For ex
 the `onPageChange` handler ([see below](#page-change-handler) or view the [example](example/app/scripts/app.js) for details).
 
 Pageable table will expect the server response to look like the following in order to properly construct pagination links.
-Notice the actual data is contained within the "contents" property.  Then we have pagination related properties.
+Notice the actual data is contained within the `contents` property.  Then we have pagination related properties.
 
 ```javascript
 {
