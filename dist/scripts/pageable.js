@@ -93,12 +93,19 @@ var PageableTable = (function (_Component) {
           var pageable = (0, _objectAssign2.default)({}, JSON.parse(data.entity));
           delete pageable.content;
           _this3.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
+          _this3.updateTable();
         });
       }
     }
   }, {
     key: 'componentWillUpdate',
     value: function componentWillUpdate(nextProps, nextState) {
+      var clearPinned = function clearPinned(p) {
+        while (p.firstChild) {
+          p.removeChild(p.firstChild);
+        }
+      };
+
       if (nextState.responsive) {
         var copy = _react2.default.findDOMNode(this.refs.table).cloneNode(true);
         var columnsToHide = copy.querySelectorAll('td:not(:first-child), th:not(:first-child)');
@@ -107,12 +114,10 @@ var PageableTable = (function (_Component) {
         }
 
         var pinned = _react2.default.findDOMNode(this.refs.pinned);
+        clearPinned(pinned);
         if (pinned.childNodes.length === 0) pinned.appendChild(copy);
       } else {
-        var pinned = _react2.default.findDOMNode(this.refs.pinned);
-        while (pinned.firstChild) {
-          pinned.removeChild(pinned.firstChild);
-        }
+        clearPinned(_react2.default.findDOMNode(this.refs.pinned));
       }
     }
   }, {
@@ -126,11 +131,6 @@ var PageableTable = (function (_Component) {
         'div',
         null,
         _react2.default.createElement(PaginationLinks, { onPageChange: this.props.onPageChange, pageable: this.state.pageable }),
-        _react2.default.createElement(
-          'h2',
-          null,
-          this.state.responsive ? 'Responsive' : 'Not Responsive'
-        ),
         _react2.default.createElement(
           'div',
           { className: this.state.responsive ? 'responsive' : '' },

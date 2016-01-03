@@ -59,11 +59,16 @@ export default class PageableTable extends Component {
         let pageable = assign({}, JSON.parse(data.entity));
         delete pageable.content;
         this.setState({data: JSON.parse(data.entity).content, pageable: pageable})
+        this.updateTable();
       });
     }
   }
 
   componentWillUpdate(nextProps, nextState) {
+    let clearPinned = (p) => {
+      while(p.firstChild) p.removeChild(p.firstChild);
+    };
+
     if(nextState.responsive) {
       let copy = React.findDOMNode(this.refs.table).cloneNode(true);
       let columnsToHide = copy.querySelectorAll('td:not(:first-child), th:not(:first-child)');
@@ -72,13 +77,11 @@ export default class PageableTable extends Component {
       }
 
       let pinned = React.findDOMNode(this.refs.pinned);
+      clearPinned(pinned);
       if(pinned.childNodes.length === 0)
         pinned.appendChild(copy);
     } else {
-      let pinned = React.findDOMNode(this.refs.pinned);
-      while(pinned.firstChild) {
-        pinned.removeChild(pinned.firstChild);
-      }
+      clearPinned(React.findDOMNode(this.refs.pinned));
     }
   }
 
@@ -94,7 +97,6 @@ export default class PageableTable extends Component {
     return (
       <div>
         <PaginationLinks onPageChange={this.props.onPageChange} pageable={this.state.pageable}/>
-        <h2>{this.state.responsive ? 'Responsive' : 'Not Responsive'}</h2>
         <div className={this.state.responsive ? 'responsive' : ''}>
           <div className={this.state.responsive ? 'scrollable' : ''}>
             <table ref="table" className={'pageable-table ' + (typeof this.props.className !== 'undefined' ? this.props.className : '')}>
