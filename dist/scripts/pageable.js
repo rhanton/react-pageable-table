@@ -19,11 +19,9 @@ var _numeral = require('numeral');
 
 var _numeral2 = _interopRequireDefault(_numeral);
 
-var _objectAssign = require('object-assign');
-
-var _objectAssign2 = _interopRequireDefault(_objectAssign);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31,8 +29,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PageableTable = (function (_Component) {
-  _inherits(PageableTable, _Component);
+var PageableTable = (function (_React$Component) {
+  _inherits(PageableTable, _React$Component);
 
   function PageableTable(props) {
     _classCallCheck(this, PageableTable);
@@ -48,18 +46,12 @@ var PageableTable = (function (_Component) {
         numberOfElements: 0,
         totalElements: 0,
         totalPages: 0
-      },
-      responsive: false
+      }
     };
     return _this;
   }
 
   _createClass(PageableTable, [{
-    key: 'updateTable',
-    value: function updateTable() {
-      this.setState({ responsive: window.outerWidth < 767 });
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this2 = this;
@@ -67,18 +59,15 @@ var PageableTable = (function (_Component) {
       var path = this.props.dataPath;
       path += path.indexOf('?') > -1 ? '&' : '?';
       path += 'page=0' + (this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '');
-      (0, _rest2.default)(path).then(function (data) {
-        var pageable = (0, _objectAssign2.default)({}, JSON.parse(data.entity));
-        delete pageable.content;
-        _this2.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
-        _this2.updateTable();
-        window.addEventListener('resize', _this2.updateTable.bind(_this2));
+      (0, _rest2.default)(path).then(function (response) {
+        var _JSON$parse = JSON.parse(response.entity);
+
+        var data = _JSON$parse.content;
+
+        var pageable = _objectWithoutProperties(_JSON$parse, ['content']);
+
+        _this2.setState({ data: data, pageable: pageable });
       });
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      window.removeEventListener('resize', this.updateTable);
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -89,35 +78,15 @@ var PageableTable = (function (_Component) {
         var path = nextProps.dataPath;
         path += path.indexOf('?') > -1 ? '&' : '?';
         path += nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '';
-        (0, _rest2.default)(path).then(function (data) {
-          var pageable = (0, _objectAssign2.default)({}, JSON.parse(data.entity));
-          delete pageable.content;
-          _this3.setState({ data: JSON.parse(data.entity).content, pageable: pageable });
-          _this3.updateTable();
+        (0, _rest2.default)(path).then(function (response) {
+          var _JSON$parse2 = JSON.parse(response.entity);
+
+          var data = _JSON$parse2.content;
+
+          var pageable = _objectWithoutProperties(_JSON$parse2, ['content']);
+
+          _this3.setState({ data: data, pageable: pageable });
         });
-      }
-    }
-  }, {
-    key: 'componentWillUpdate',
-    value: function componentWillUpdate(nextProps, nextState) {
-      var clearPinned = function clearPinned(p) {
-        while (p.firstChild) {
-          p.removeChild(p.firstChild);
-        }
-      };
-
-      if (nextState.responsive) {
-        var copy = _react2.default.findDOMNode(this.refs.table).cloneNode(true);
-        var columnsToHide = copy.querySelectorAll('td:not(:first-child), th:not(:first-child)');
-        for (var x = 0; x < columnsToHide.length; x++) {
-          columnsToHide[x].style.display = 'none';
-        }
-
-        var pinned = _react2.default.findDOMNode(this.refs.pinned);
-        clearPinned(pinned);
-        if (pinned.childNodes.length === 0) pinned.appendChild(copy);
-      } else {
-        clearPinned(_react2.default.findDOMNode(this.refs.pinned));
       }
     }
   }, {
@@ -133,26 +102,21 @@ var PageableTable = (function (_Component) {
         _react2.default.createElement(PaginationLinks, { onPageChange: this.props.onPageChange, pageable: this.state.pageable }),
         _react2.default.createElement(
           'div',
-          { className: this.state.responsive ? 'responsive' : '' },
+          { className: 'table-wrapper' },
           _react2.default.createElement(
-            'div',
-            { className: this.state.responsive ? 'scrollable' : '' },
+            'table',
+            { ref: 'table', className: 'pageable-table ' + (typeof this.props.className !== 'undefined' ? this.props.className : '') },
             _react2.default.createElement(
-              'table',
-              { ref: 'table', className: 'pageable-table ' + (typeof this.props.className !== 'undefined' ? this.props.className : '') },
-              _react2.default.createElement(
-                'thead',
-                null,
-                this.props.tableHeader()
-              ),
-              _react2.default.createElement(
-                'tbody',
-                null,
-                data
-              )
+              'thead',
+              null,
+              this.props.tableHeader()
+            ),
+            _react2.default.createElement(
+              'tbody',
+              null,
+              data
             )
-          ),
-          _react2.default.createElement('div', { ref: 'pinned', className: 'pinned' })
+          )
         ),
         _react2.default.createElement(PageableTableStats, { stats: stats })
       );
@@ -160,7 +124,7 @@ var PageableTable = (function (_Component) {
   }]);
 
   return PageableTable;
-})(_react.Component);
+})(_react2.default.Component);
 
 PageableTable.defaultProps = {
   dataMapper: function dataMapper() {},
@@ -171,8 +135,8 @@ PageableTable.defaultProps = {
 };
 exports.default = PageableTable;
 
-var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
-  _inherits(PaginationLinks, _Component2);
+var PaginationLinks = exports.PaginationLinks = (function (_React$Component2) {
+  _inherits(PaginationLinks, _React$Component2);
 
   function PaginationLinks() {
     var _Object$getPrototypeO;
@@ -253,7 +217,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_Component2) {
   }]);
 
   return PaginationLinks;
-})(_react.Component);
+})(_react2.default.Component);
 
 PaginationLinks.defaultProps = {
   onPageChange: function onPageChange() {},
@@ -267,8 +231,8 @@ PaginationLinks.defaultProps = {
   }
 };
 
-var PageableTableStats = exports.PageableTableStats = (function (_Component3) {
-  _inherits(PageableTableStats, _Component3);
+var PageableTableStats = exports.PageableTableStats = (function (_React$Component3) {
+  _inherits(PageableTableStats, _React$Component3);
 
   function PageableTableStats() {
     _classCallCheck(this, PageableTableStats);
@@ -299,7 +263,7 @@ var PageableTableStats = exports.PageableTableStats = (function (_Component3) {
   }]);
 
   return PageableTableStats;
-})(_react.Component);
+})(_react2.default.Component);
 
 PageableTableStats.defaultProps = {
   stats: []
