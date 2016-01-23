@@ -70,7 +70,8 @@ gulp.task('vendor', ['clean'], function() {
     .transform(babelify);
 
   getNPMPackageIds().forEach(function(id) {
-    b.require(resolve.sync(id), {expose: id});
+    if(id !== 'skeleton-css')
+      b.require(resolve.sync(id), {expose: id});
   });
 
   return bundle('vendor.js', b);
