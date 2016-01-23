@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import rest from 'rest';
 import numeral from 'numeral';
-import assign from 'object-assign';
 
-export default class PageableTable extends Component {
+export default class PageableTable extends React.Component {
   static defaultProps = {
     dataMapper: function() {},
     dataPath: '/',
@@ -24,30 +23,18 @@ export default class PageableTable extends Component {
         numberOfElements: 0,
         totalElements: 0,
         totalPages: 0
-      },
-      responsive: false
+      }
     };
-  }
-
-  updateTable() {
-    this.setState({responsive: window.outerWidth < 767});
   }
 
   componentDidMount() {
     let path = this.props.dataPath;
     path += path.indexOf('?') > -1 ? '&' : '?';
     path += 'page=0' + (this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '');
-    rest(path).then(data => {
-      let pageable = assign({}, JSON.parse(data.entity));
-      delete pageable.content;
-      this.setState({data: JSON.parse(data.entity).content, pageable: pageable});
-      this.updateTable();
-      window.addEventListener('resize', this.updateTable.bind(this));
+    rest(path).then(response => {
+      let {content: data, ...pageable} = JSON.parse(response.entity);
+      this.setState({data: data, pageable: pageable});
     });
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateTable);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,33 +42,10 @@ export default class PageableTable extends Component {
       let path = nextProps.dataPath;
       path += path.indexOf('?') > -1 ? '&' : '?';
       path += nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '';
-      rest(path).then(data => {
-        let pageable = assign({}, JSON.parse(data.entity));
-        delete pageable.content;
-        this.setState({data: JSON.parse(data.entity).content, pageable: pageable})
-        this.updateTable();
+      rest(path).then(response => {
+        let {content: data, ...pageable} = JSON.parse(response.entity);
+        this.setState({data: data, pageable: pageable});
       });
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    let clearPinned = (p) => {
-      while(p.firstChild) p.removeChild(p.firstChild);
-    };
-
-    if(nextState.responsive) {
-      let copy = React.findDOMNode(this.refs.table).cloneNode(true);
-      let columnsToHide = copy.querySelectorAll('td:not(:first-child), th:not(:first-child)');
-      for(let x=0; x<columnsToHide.length; x++) {
-        columnsToHide[x].style.display = 'none';
-      }
-
-      let pinned = React.findDOMNode(this.refs.pinned);
-      clearPinned(pinned);
-      if(pinned.childNodes.length === 0)
-        pinned.appendChild(copy);
-    } else {
-      clearPinned(React.findDOMNode(this.refs.pinned));
     }
   }
 
@@ -97,22 +61,19 @@ export default class PageableTable extends Component {
     return (
       <div>
         <PaginationLinks onPageChange={this.props.onPageChange} pageable={this.state.pageable}/>
-        <div className={this.state.responsive ? 'responsive' : ''}>
-          <div className={this.state.responsive ? 'scrollable' : ''}>
+          <div className="table-wrapper">
             <table ref="table" className={'pageable-table ' + (typeof this.props.className !== 'undefined' ? this.props.className : '')}>
               <thead>{this.props.tableHeader()}</thead>
               <tbody>{data}</tbody>
             </table>
           </div>
-          <div ref="pinned" className="pinned"></div>
-        </div>
         <PageableTableStats stats={stats}/>
       </div>
     );
   }
 }
 
-export class PaginationLinks extends Component {
+export class PaginationLinks extends React.Component {
   static defaultProps = {
     onPageChange: function() {},
     pageable: {
@@ -162,7 +123,7 @@ export class PaginationLinks extends Component {
   }
 }
 
-export class PageableTableStats extends Component {
+export class PageableTableStats extends React.Component {
   static defaultProps = {
     stats: []
   };
