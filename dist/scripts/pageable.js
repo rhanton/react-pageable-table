@@ -76,7 +76,7 @@ var PageableTable = (function (_React$Component) {
       if (nextProps.dataPath !== this.props.dataPath) {
         var path = nextProps.dataPath;
         path += path.indexOf('?') > -1 ? '&' : '?';
-        path += nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '';
+        path += nextProps.sort.length > 0 ? 'sort=' + nextProps.sort.join('&sort=') : '';
         client(path).then(function (_ref2) {
           var entity = _ref2.entity;
           return _this2.setState({ data: entity.content, pageable: entity });
