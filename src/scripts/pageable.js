@@ -25,7 +25,7 @@ export default class PageableTable extends React.Component {
   componentDidMount() {
     let path = this.props.dataPath;
     path += path.indexOf('?') > -1 ? '&' : '?';
-    path += 'page=0' + (this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '');
+    path += this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '';
     client(path).then(({entity}) => this.setState({data: entity.content, pageable: entity}));
   }
 
