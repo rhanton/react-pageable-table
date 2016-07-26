@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import PageableTable from '../../../src/scripts/pageable';
+import React from 'react';
+import {render} from 'react-dom';
+import PageableTable from 'react-pageable-table';
 
-export default class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -30,11 +31,11 @@ export default class App extends Component {
     );
   }
 
-  handlePageChange(page) {
+  handlePageChange = page => {
     // This example page change handler is probably too simplistic for most apps,
     // you probably want to keep track of the current page somehow.
     this.setState({dataPath: this.state.dataPath + '?page=' + page});
-  }
+  };
 
   render() {
     return (
@@ -46,4 +47,4 @@ export default class App extends Component {
   }
 }
 
-React.render(<App/>, document.getElementById('app'));
+render(<App/>, document.getElementById('app'));

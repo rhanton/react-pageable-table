@@ -5,9 +5,9 @@
     {"id": "1000002", "name": "Han Solo", "description": "Han Solo is a fictional character in the Star Wars franchise, portrayed in films by Harrison Ford."}
   ],
   "first": true,
-  "last": true,
+  "last": false,
   "number": 0,
-  "numberOfElements": 3,
-  "totalElements": 3,
-  "totalPages" : 1
+  "numberOfElements": 30,
+  "totalElements": 30,
+  "totalPages" : 10
 }
