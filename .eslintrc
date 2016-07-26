@@ -4,8 +4,7 @@
     "indent": [2, 2, {"SwitchCase": 1}],
     "quotes": [2, "single"],
     "linebreak-style": [2, "unix"],
-    "semi": [2, "always"],
-    "react/no-did-mount-set-state": [0, "allow-in-func"]
+    "semi": [2, "always"]
   },
   "plugins": ["react"],
   "extends": ["eslint:recommended", "plugin:react/recommended"],
