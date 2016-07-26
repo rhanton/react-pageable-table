@@ -1,16 +1,11 @@
 import React from 'react';
 import rest from 'rest';
+import mime from 'rest/interceptor/mime';
 import numeral from 'numeral';
 
-export default class PageableTable extends React.Component {
-  static defaultProps = {
-    dataMapper: function() {},
-    dataPath: '/',
-    sort: [],
-    tableHeader: function() {},
-    onPageChange: function() {}
-  };
+const client = rest.wrap(mime, {mime: 'application/json'});
 
+export default class PageableTable extends React.Component {
   constructor(props) {
     super(props);
 
@@ -31,10 +26,7 @@ export default class PageableTable extends React.Component {
     let path = this.props.dataPath;
     path += path.indexOf('?') > -1 ? '&' : '?';
     path += 'page=0' + (this.props.sort.length > 0 ? '&sort=' + this.props.sort.join('&sort=') : '');
-    rest(path).then(response => {
-      let {content: data, ...pageable} = JSON.parse(response.entity);
-      this.setState({data: data, pageable: pageable});
-    });
+    client(path).then(({entity}) => this.setState({data: entity.content, pageable: entity}));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,10 +34,7 @@ export default class PageableTable extends React.Component {
       let path = nextProps.dataPath;
       path += path.indexOf('?') > -1 ? '&' : '?';
       path += nextProps.sort.length > 0 ? '&sort=' + nextProps.sort.join('&sort=') : '';
-      rest(path).then(response => {
-        let {content: data, ...pageable} = JSON.parse(response.entity);
-        this.setState({data: data, pageable: pageable});
-      });
+      client(path).then(({entity}) => this.setState({data: entity.content, pageable: entity}));
     }
   }
 
@@ -61,52 +50,66 @@ export default class PageableTable extends React.Component {
     return (
       <div>
         <PaginationLinks onPageChange={this.props.onPageChange} pageable={this.state.pageable}/>
-          <div className="table-wrapper">
-            <table ref="table" className={'pageable-table ' + (typeof this.props.className !== 'undefined' ? this.props.className : '')}>
-              <thead>{this.props.tableHeader()}</thead>
-              <tbody>{data}</tbody>
-            </table>
-          </div>
+        <div className="table-wrapper">
+          <table ref="table" className={'pageable-table ' + this.props.className}>
+            <thead>{this.props.tableHeader()}</thead>
+            <tbody>{data}</tbody>
+          </table>
+        </div>
         <PageableTableStats stats={stats}/>
       </div>
     );
   }
 }
 
-export class PaginationLinks extends React.Component {
-  static defaultProps = {
-    onPageChange: function() {},
-    pageable: {
-      first: true,
-      last: true,
-      number: 0,
-      numberOfElements: 0,
-      totalElements: 0,
-      totalPages: 0
-    }
-  };
+PageableTable.defaultProps = {
+  dataMapper: function() {},
+  dataPath: '/',
+  sort: [],
+  tableHeader: function() {},
+  onPageChange: function() {},
+  className: ''
+};
 
-  onFirst = (e) => {
+PageableTable.propTypes = {
+  dataPath: React.PropTypes.string,
+  sort: React.PropTypes.array,
+  dataMapper: React.PropTypes.func,
+  onPageChange: React.PropTypes.func,
+  className: React.PropTypes.string,
+  tableHeader: React.PropTypes.func
+};
+
+export class PaginationLinks extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onFirst = this.onFirst.bind(this);
+    this.onPrevious = this.onPrevious.bind(this);
+    this.onNext = this.onNext.bind(this);
+    this.onLast = this.onLast.bind(this);
+  }
+
+  onFirst(e) {
     e.preventDefault();
     this.props.onPageChange(0);
-  };
+  }
 
-  onPrevious = (e) => {
+  onPrevious(e) {
     e.preventDefault();
     let page = this.props.pageable.number > 0 ? this.props.pageable.number - 1 : 0;
     this.props.onPageChange(page);
-  };
+  }
 
-  onNext = (e) => {
+  onNext(e) {
     e.preventDefault();
     let page = this.props.pageable.number < (this.props.pageable.totalPages - 1) ? this.props.pageable.number + 1 : this.props.pageable.number;
     this.props.onPageChange(page);
-  };
+  }
 
-  onLast = (e) => {
+  onLast(e) {
     e.preventDefault();
     this.props.onPageChange(this.props.pageable.totalPages - 1);
-  };
+  }
 
   render() {
     return (
@@ -123,15 +126,31 @@ export class PaginationLinks extends React.Component {
   }
 }
 
-export class PageableTableStats extends React.Component {
-  static defaultProps = {
-    stats: []
-  };
-
-  render() {
-    let stats = this.props.stats.map(function(stat, idx) {
-      return <li key={idx}>{stat}</li>;
-    });
-    return stats.length > 0 ? <div><ul className="pageable-table-stats">{stats}</ul></div> : null;
+PaginationLinks.defaultProps = {
+  onPageChange: function() {},
+  pageable: {
+    first: true,
+    last: true,
+    number: 0,
+    numberOfElements: 0,
+    totalElements: 0,
+    totalPages: 0
   }
+};
+
+PaginationLinks.propTypes = {
+  onPageChange: React.PropTypes.func,
+  pageable: React.PropTypes.object
+};
+
+export function PageableTableStats({stats}) {
+  return stats.length > 0 ? <div><ul className="pageable-table-stats">{stats.map((stat, idx) => <li key={idx}>{stat}</li>)}</ul></div> : null;
 }
+
+PageableTableStats.defaultProps = {
+  stats: []
+};
+
+PageableTableStats.propTypes = {
+  stats: React.PropTypes.array
+};
