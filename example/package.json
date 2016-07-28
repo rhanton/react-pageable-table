@@ -7,7 +7,7 @@
   "private": true,
   "dependencies": {
     "react": "^0.13.3",
-    "react-pageable-table": "git+https://github.com/pgrimard/react-pageable-table.git",
+    "react-pageable-table": "file:///Users/Patrick/IdeaProjects/react-pageable-table",
     "skeleton-css": "^2.0.4"
   },
   "devDependencies": {

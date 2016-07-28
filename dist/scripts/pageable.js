@@ -1,11 +1,11 @@
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PageableTableStats = exports.PaginationLinks = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
 
@@ -29,7 +29,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PageableTable = (function (_React$Component) {
+var PageableTable = function (_React$Component) {
   _inherits(PageableTable, _React$Component);
 
   function PageableTable(props) {
@@ -124,7 +124,7 @@ var PageableTable = (function (_React$Component) {
   }]);
 
   return PageableTable;
-})(_react2.default.Component);
+}(_react2.default.Component);
 
 PageableTable.defaultProps = {
   dataMapper: function dataMapper() {},
@@ -135,7 +135,7 @@ PageableTable.defaultProps = {
 };
 exports.default = PageableTable;
 
-var PaginationLinks = exports.PaginationLinks = (function (_React$Component2) {
+var PaginationLinks = exports.PaginationLinks = function (_React$Component2) {
   _inherits(PaginationLinks, _React$Component2);
 
   function PaginationLinks() {
@@ -217,7 +217,7 @@ var PaginationLinks = exports.PaginationLinks = (function (_React$Component2) {
   }]);
 
   return PaginationLinks;
-})(_react2.default.Component);
+}(_react2.default.Component);
 
 PaginationLinks.defaultProps = {
   onPageChange: function onPageChange() {},
@@ -231,7 +231,7 @@ PaginationLinks.defaultProps = {
   }
 };
 
-var PageableTableStats = exports.PageableTableStats = (function (_React$Component3) {
+var PageableTableStats = exports.PageableTableStats = function (_React$Component3) {
   _inherits(PageableTableStats, _React$Component3);
 
   function PageableTableStats() {
@@ -263,7 +263,7 @@ var PageableTableStats = exports.PageableTableStats = (function (_React$Componen
   }]);
 
   return PageableTableStats;
-})(_react2.default.Component);
+}(_react2.default.Component);
 
 PageableTableStats.defaultProps = {
   stats: []
